@@ -1,0 +1,70 @@
+# Merge this line into your EXISTING homeassistant: block:
+# homeassistant:
+#   packages: !include_dir_named packages
+# Never add packages: at the configuration root.
+# Replace all example_heater entity IDs with your own native Haier entities.
+
+template:
+  - switch:
+      - name: Haier Heater Boost
+        unique_id: haier_heater_boost_mode
+        icon: mdi:water-boiler
+        availability: >-
+          {{ states('switch.example_heater_onoffstatus') in ['on', 'off']
+             and states('switch.example_heater_heatkeepingstatus') in ['on', 'off']
+             and states('select.example_heater_heatingmode') != 'unavailable' }}
+        state: >-
+          {{ is_state('select.example_heater_heatingmode', '增容') }}
+        turn_on:
+          - action: select.select_option
+            target:
+              entity_id: select.example_heater_heatingmode
+            data:
+              option: 增容
+        # Deliberate behavior: exit boost by returning to warm-water mode.
+        # The observed model does NOT expose a "节能" heating-mode option.
+        turn_off:
+          - action: switch.turn_on
+            target:
+              entity_id: switch.example_heater_heatkeepingstatus
+
+  - select:
+      - name: Haier Heater Speed
+        unique_id: haier_heater_speed_mode
+        icon: mdi:speedometer
+        availability: >-
+          {{ states('switch.example_heater_onoffstatus') in ['on', 'off']
+             and states('switch.example_heater_heatkeepingstatus') in ['on', 'off']
+             and states('select.example_heater_heatingmode') != 'unavailable'
+             and states('select.example_heater_power') != 'unavailable' }}
+        # These are native integration option strings, NOT validated real wattages.
+        # Confirm both order and exact strings against YOUR integration and App.
+        options: >-
+          {% set choices = ['低档', '中档', '高档'] %}
+          {% if is_state('switch.example_heater_heatkeepingstatus', 'on') %}
+            {{ ['智能温水中'] + choices }}
+          {% elif is_state('select.example_heater_heatingmode', '增容') %}
+            {{ ['速热增容中'] + choices }}
+          {% elif states('select.example_heater_power') not in ['800W(低)', '1200W(中)', '2000W(高)'] %}
+            {{ ['未启用'] + choices }}
+          {% else %}
+            {{ choices }}
+          {% endif %}
+        state: >-
+          {% if is_state('switch.example_heater_heatkeepingstatus', 'on') %}
+            智能温水中
+          {% elif is_state('select.example_heater_heatingmode', '增容') %}
+            速热增容中
+          {% else %}
+            {{ {'800W(低)': '低档', '1200W(中)': '中档', '2000W(高)': '高档'}.get(states('select.example_heater_power'), '未启用') }}
+          {% endif %}
+        select_option:
+          - if:
+              - condition: template
+                value_template: "{{ option in ['低档', '中档', '高档'] }}"
+            then:
+              - action: select.select_option
+                target:
+                  entity_id: select.example_heater_power
+                data:
+                  option: "{{ {'低档': '800W(低)', '中档': '1200W(中)', '高档': '2000W(高)'}[option] }}"

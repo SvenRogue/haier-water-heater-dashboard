@@ -1,0 +1,13 @@
+# Never commit real Home Assistant runtime data.
+.storage/
+secrets.yaml
+configuration.yaml
+*.db
+*.db-*
+*.log
+*.bak*
+.env
+.env.*
+__pycache__/
+*.py[cod]
+.venv/

@@ -1,0 +1,51 @@
+title: 热水器
+views:
+  - title: 热水器
+    path: heater
+    icon: mdi:water-boiler
+    type: sections
+    max_columns: 2
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading: 热水器
+            icon: mdi:shower
+          - type: tile
+            entity: switch.example_heater_onoffstatus
+            name: 热水器
+            icon: mdi:water-boiler
+            features:
+              - type: toggle
+            grid_options: {columns: 6}
+          - type: tile
+            entity: sensor.example_heater_currenttemperature
+            name: 水温
+            icon: mdi:thermometer
+            grid_options: {columns: 6}
+          - type: tile
+            entity: switch.example_heater_heatkeepingstatus
+            name: 智能温水
+            icon: mdi:water-thermometer
+            features:
+              - type: toggle
+            grid_options: {columns: 6}
+          - type: tile
+            entity: switch.haier_heater_boost
+            name: 速热增容
+            icon: mdi:water-boiler
+            features:
+              - type: toggle
+            grid_options: {columns: 6}
+          - type: tile
+            entity: select.haier_heater_speed
+            name: 变速选择
+            icon: mdi:speedometer
+            features:
+              - type: select-options
+            grid_options: {columns: 12}
+          - type: tile
+            entity: sensor.example_heater_targettemperature
+            name: 设定温度
+            icon: mdi:thermometer-check
+            grid_options: {columns: 12}
