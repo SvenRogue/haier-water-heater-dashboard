@@ -86,8 +86,13 @@ def main() -> None:
             assert row == 0
     names = {card.get('name') for card in dashboard['views'][0]['sections'][0]['cards']}
     assert {'智能温水', '速热增容', '变速选择'} <= names
-    ET.parse(ROOT / 'docs' / 'preview.svg')
-    print('PASS: YAML, native dashboard grid, required controls, SVG syntax')
+    figures = sorted((ROOT / 'docs' / 'images').glob('*.svg'))
+    assert {p.name for p in figures} == {'controls.svg', 'mode-transitions.svg'}, figures
+    for figure in figures:
+        ET.parse(figure)
+    assert (ROOT / 'docs' / 'index.html').is_file()
+    assert (ROOT / 'docs' / 'haier-heater-guide-v1.1.0.pdf').is_file()
+    print('PASS: YAML, native dashboard grid, required controls, manual figures and exports')
 
     # Detect obvious accidental private data; this is not a full secret scanner.
     patterns = {
@@ -103,7 +108,16 @@ def main() -> None:
     for path in sorted(ROOT.rglob('*')):
         if not path.is_file() or any(part in {'.git', '__pycache__', '.venv'} for part in path.relative_to(ROOT).parts):
             continue
-        text = path.read_text(encoding='utf-8')
+        if path.suffix.lower() == '.pdf':
+            try:
+                import fitz  # optional: verify the exported manual too
+            except ImportError:
+                print('SKIP: PDF text scan needs PyMuPDF (pip install pymupdf)')
+                continue
+            text = ''.join(page.get_text() for page in fitz.open(path))
+            assert fitz.open(path).metadata.get('author', '') == ''
+        else:
+            text = path.read_text(encoding='utf-8')
         for label, pattern in patterns.items():
             assert re.search(pattern, text) is None, (label, str(path.relative_to(ROOT)))
         count += 1

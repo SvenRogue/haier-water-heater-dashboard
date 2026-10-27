@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="海尔热水器 Home Assistant 控制面板使用手册，包含安装步骤、控件图示与模式切换说明。"><title>热水器控制面板使用手册 · v1.1.0</title><style>
+:root{--ink:#1d1d1f;--secondary:#6e6e73;--line:#d2d2d7;--paper:#fff;--soft:#f5f5f7;--link:#0066cc;--body:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;color-scheme:light}
+*{box-sizing:border-box}html{scroll-padding-top:100px}body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.85;font-weight:400;-webkit-font-smoothing:antialiased}a{color:var(--link);text-decoration:none}a:hover{text-decoration:underline}a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--link);outline-offset:5px;border-radius:3px}.skip{position:absolute;left:20px;top:-80px;background:white;padding:12px;z-index:9}.skip:focus{top:8px}.topbar{position:sticky;top:0;background:#fff;z-index:2;border-bottom:1px solid #e8e8ed}.bar-inner{max-width:1160px;min-height:66px;margin:auto;padding:12px 28px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{font-weight:600;color:var(--ink);font-size:19px;line-height:1.4}.bar-links{display:flex;gap:24px;align-items:center;font-size:14px}.bar-links a{min-height:36px;display:flex;align-items:center}.print{border:0;background:transparent;padding:5px 0;color:var(--link);font:inherit;cursor:pointer;min-height:36px}.layout{max-width:1160px;margin:auto;display:grid;grid-template-columns:206px minmax(0,720px);column-gap:72px;padding:54px 28px 96px}.sidebar{align-self:start;position:sticky;top:110px;font-size:14px;line-height:1.6}.nav-title{color:var(--secondary);font-size:13px;margin:0 0 15px}.toc{display:grid;gap:3px}.toc a{padding:9px 0;display:block;color:var(--ink);border-radius:3px}.toc a:hover{color:var(--link);text-decoration:none}.toc a[aria-current=true]{color:var(--link);font-weight:600}.mobile-contents{display:none}article{min-width:0}article>.edition{font-size:14px;color:var(--secondary);margin-bottom:12px}h1,h2,h3{font-weight:600;text-wrap:pretty;line-height:1.35}h1{font-size:40px;letter-spacing:-.02em;margin:0 0 24px}h2{font-size:29px;letter-spacing:-.015em;margin:62px 0 22px;scroll-margin-top:100px}h3{font-size:21px;margin:32px 0 12px;scroll-margin-top:100px}p{margin:0 0 18px;text-wrap:pretty}article>h1+p{font-size:21px;line-height:1.7;margin-bottom:20px}strong{font-weight:600}ul,ol{padding-left:1.45em;margin:18px 0 24px}li{padding-left:.25em;margin:10px 0}li p{margin:0 0 12px}blockquote{margin:26px 0;padding:18px 22px;border:0;border-radius:8px;background:var(--soft);font-size:16px;line-height:1.8}blockquote p{margin:0}code{font-family:var(--mono);font-size:.84em;overflow-wrap:anywhere;background:var(--soft);padding:.15em .3em;border-radius:3px}pre{background:var(--soft);border-radius:8px;padding:20px 22px;margin:22px 0 26px;overflow-x:auto;line-height:1.65;font-size:15px;tab-size:2}pre code{background:none;padding:0;font-size:inherit;overflow-wrap:normal;white-space:pre}table{border-collapse:collapse;width:100%;margin:24px 0 30px;font-size:15px;line-height:1.7;text-align:left}th{font-weight:600;color:var(--ink);padding:12px 12px 12px 0;border-bottom:1px solid var(--line);vertical-align:top}td{padding:15px 12px 15px 0;border-bottom:1px solid #e8e8ed;vertical-align:top}th:last-child,td:last-child{padding-right:0}table code{font-size:.83em;word-break:break-word}figure{margin:28px 0 36px;break-inside:avoid}figure svg{display:block;width:100%;height:auto}figcaption{font-size:13px;line-height:1.75;color:var(--secondary);padding-top:12px}footer{border-top:1px solid #e8e8ed;padding:25px 28px 40px;font-size:13px;line-height:1.8;color:var(--secondary)}.footer-inner{max-width:1104px;margin:auto}.footer-inner p{margin:0 0 8px}.back-top{display:inline-block;padding:10px 0;min-height:44px}
+@media(max-width:1000px){.layout{grid-template-columns:180px minmax(0,1fr);gap:36px}h1{font-size:35px}}
+@media(max-width:760px){html{scroll-padding-top:92px}.bar-inner{min-height:64px;padding:12px 22px}.brand{font-size:16px;max-width:180px}.bar-links{gap:16px;font-size:13px}.bar-links .repository{display:none}.layout{display:block;padding:28px 22px 64px}.sidebar{display:none}.mobile-contents{display:block;background:var(--soft);padding:12px 16px;border-radius:8px;margin-bottom:32px;font-size:15px}.mobile-contents summary{cursor:pointer;min-height:28px;line-height:28px;font-weight:600}.mobile-contents .toc{padding-top:12px}.toc a{min-height:44px}h1{font-size:32px;line-height:1.4;margin-bottom:20px}h2{font-size:25px;margin-top:48px}h3{font-size:20px}body{font-size:17px;line-height:1.85}article>h1+p{font-size:20px}pre{font-size:13px;padding:18px 16px}table{font-size:14px;table-layout:fixed}td,th{padding-right:12px}figure{margin:24px 0 30px}blockquote{padding:16px 18px}footer{padding-left:22px;padding-right:22px}}
+@media print{@page{size:A4;margin:18mm 17mm 20mm}html{scroll-padding:0}body{font-size:12pt;line-height:1.7;color:#1d1d1f}.topbar,.sidebar,.mobile-contents,.skip,.back-top{display:none!important}.layout{display:block;max-width:none;padding:0;margin:0}article{max-width:none}article>.edition{font-size:12pt}h1{font-size:25pt;margin:0 0 16pt}article>h1+p{font-size:15pt}h2{font-size:18pt;margin:30pt 0 12pt;break-after:avoid}h3{font-size:14pt;margin:20pt 0 9pt;break-after:avoid}p{margin-bottom:12pt;orphans:3;widows:3}li{margin:7pt 0}blockquote{font-size:12pt;padding:12pt 14pt;break-inside:avoid}code,table code{font-size:12pt}pre{font-size:12pt;line-height:1.6;padding:12pt;white-space:pre-wrap;break-inside:avoid}pre code{white-space:pre-wrap;overflow-wrap:anywhere}table{font-size:12pt;table-layout:fixed}th:first-child,td:first-child{width:30%}th:last-child,td:last-child{width:70%}table code{font-size:11pt;overflow-wrap:anywhere}tr{break-inside:avoid}td,th{padding:9pt 8pt 9pt 0}figure{margin:20pt 0;break-inside:avoid}figure svg{max-height:145mm}figcaption{font-size:12pt}footer{padding:18pt 0 0;margin-top:28pt;font-size:12pt}a{color:inherit;text-decoration:none}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style></head>
+<body id="top"><a class="skip" href="#content">跳至正文</a><header class="topbar"><div class="bar-inner"><a class="brand" href="#top">热水器控制面板</a><div class="bar-links"><a class="repository" href="https://github.com/SvenRogue/haier-water-heater-dashboard">项目仓库</a><a href="https://github.com/SvenRogue/haier-water-heater-dashboard/releases/tag/v1.1.0">下载</a><button type="button" class="print" onclick="window.print()">打印</button></div></div></header>
+<div class="layout"><aside class="sidebar"><p class="nav-title">使用手册</p><nav class="toc" aria-label="本页目录"><a href="#overview">认识控制面板</a><a href="#prepare">使用前准备</a><a href="#install">安装控制配置</a><a href="#dashboard">添加面板</a><a href="#modes">切换模式</a><a href="#check">检查是否正常</a><a href="#about">版本与隐私</a></nav></aside><main id="content"><details class="mobile-contents"><summary>本页目录</summary><nav class="toc" aria-label="本页目录"><a href="#overview">认识控制面板</a><a href="#prepare">使用前准备</a><a href="#install">安装控制配置</a><a href="#dashboard">添加面板</a><a href="#modes">切换模式</a><a href="#check">检查是否正常</a><a href="#about">版本与隐私</a></nav></details><article><p class="edition">使用手册 · v1.1.0</p><h1>热水器控制面板使用手册</h1>
+<p>通过 Home Assistant 管理智能温水、速热增容和加热档位。</p>
+<p>本手册适用于本项目的脱敏配置范例。已观察的设备型号为 EC6002-MG(U1)，配置语法按 Home Assistant Core 2026.6.3 校验。不同型号应先核对原生实体和模式行为。</p>
+<h2 id="overview">认识控制面板</h2>
+<p>面板保留日常需要的信息：电源、水温、两种模式开关、档位选择和设定温度。智能温水与速热增容并排显示，档位选择单独占一行。</p>
+<figure><svg xmlns="http://www.w3.org/2000/svg" width="900" height="650" viewBox="0 0 900 650" role="img" aria-labelledby="controls-title controls-desc">
+<title id="controls-title">三个控件的位置与用途</title>
+<desc id="controls-desc">合成的热水器磁贴面板。编号一为智能温水开关，编号二为速热增容开关，编号三为变速选择。电源和当前温度在上方，目标温度在下方。</desc>
+<rect width="900" height="650" rx="20" fill="#f5f5f7"/>
+<g font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif">
+<text x="36" y="45" font-size="17" fill="#6e6e73">面板示意 · 演示状态</text>
+<rect x="112" y="73" width="676" height="459" rx="18" fill="#191f26"/>
+<text x="140" y="113" font-size="22" font-weight="600" fill="#f5f5f7">热水器</text>
+<g fill="#29313b"><rect x="136" y="134" width="306" height="74" rx="12"/><rect x="458" y="134" width="306" height="74" rx="12"/><rect x="136" y="224" width="306" height="112" rx="12"/><rect x="458" y="224" width="306" height="112" rx="12"/><rect x="136" y="352" width="628" height="86" rx="12"/><rect x="136" y="454" width="628" height="55" rx="12"/></g>
+<g font-size="18" fill="#f5f5f7" font-weight="600"><text x="154" y="164">热水器</text><text x="476" y="164">当前水温</text><text x="154" y="254">智能温水</text><text x="476" y="254">速热增容</text><text x="154" y="381">变速选择</text><text x="154" y="488">设定温度</text></g>
+<g font-size="16" fill="#b9c5cf"><text x="154" y="190">开启</text><text x="476" y="190">演示：40 °C</text><text x="154" y="280">开启</text><text x="476" y="280">关闭</text><text x="662" y="488">40 °C</text></g>
+<rect x="154" y="295" width="270" height="25" rx="8" fill="#275e56"/><rect x="289" y="295" width="135" height="25" rx="8" fill="#3bd4b4"/>
+<rect x="476" y="295" width="270" height="25" rx="8" fill="#414b57"/><rect x="476" y="295" width="135" height="25" rx="8" fill="#88939d"/>
+<rect x="154" y="394" width="592" height="30" rx="7" fill="#394653"/><text x="166" y="415" font-size="15" fill="#f5f5f7">智能温水中</text><path d="m716 406 6 6 6-6" fill="none" stroke="#c1cbd3" stroke-width="2"/>
+<g fill="#0066cc"><circle cx="111" cy="240" r="20"/><circle cx="788" cy="240" r="20"/><circle cx="111" cy="372" r="20"/></g>
+<g fill="#fff" font-size="18" font-weight="600" text-anchor="middle"><text x="111" y="247">1</text><text x="788" y="247">2</text><text x="111" y="379">3</text></g>
+<g font-size="17" fill="#1d1d1f"><text x="112" y="573">1　智能温水</text><text x="348" y="573">2　速热增容</text><text x="582" y="573">3　变速选择</text></g>
+<g font-size="15" fill="#6e6e73"><text x="112" y="603">日常中温保温</text><text x="348" y="603">关闭后回到温水</text><text x="582" y="603">选择低、中、高档</text></g>
+</g></svg>
+<figcaption>图 1　控制面板示意。所有状态和温度均为演示数据，不是实时设备画面。</figcaption></figure>
+
+<h3>智能温水</h3>
+<p>使用设备提供的中温保温功能。开启后，档位选择会显示“智能温水中”。</p>
+<h3>速热增容</h3>
+<p>开启后进入设备的增容模式。<strong>关闭速热增容会回到智能温水</strong>，不会关闭热水器，也不会恢复此前的普通加热档位。</p>
+<h3>变速选择</h3>
+<p>选择低档、中档或高档即可进入普通加热。处于其他模式时，此处会显示“智能温水中”或“速热增容中”；仍然可以选择档位来切换模式。</p>
+<blockquote>
+<p><strong>使用提示：</strong> 本示例不会自动打开热水器总电源。请先开启总开关，再使用模式控制。</p>
+</blockquote>
+<h2 id="prepare">使用前准备</h2>
+<p>开始安装前，请确认以下条件：</p>
+<ul>
+<li>已在 Home Assistant 中安装并配置海尔集成，原生设备实体能正常更新。</li>
+<li>原生加热模式包含精确的“增容”选项。</li>
+<li>在海尔智家 App 中切换模式时，设备会自动退出其他模式。</li>
+<li>已备份现有配置，准备把示例合并到当前设置中。</li>
+</ul>
+<p>本项目使用原生 Sections、Tile、Toggle 和 Select options 卡片，不需要额外安装前端卡片。</p>
+<p>集成项目：<a href="https://github.com/banto6/haier">banto6/haier</a>。本示例依赖设备自身的模式互斥行为，不能保证所有型号都使用相同选项或切换方式。</p>
+<h2 id="install">安装控制配置</h2>
+<h3>第 1 步：确认原生实体</h3>
+<p>在 Home Assistant 中打开“开发者工具”&gt;“状态”，找到以下六类实体。用你自己的实体 ID 替换两个配置文件中的占位 ID。</p>
+<table>
+<thead>
+<tr>
+<th>原生功能</th>
+<th>示例中的占位 ID</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>热水器总开关</td>
+<td><code>switch.example_heater_onoffstatus</code></td>
+</tr>
+<tr>
+<td>中温保温开关</td>
+<td><code>switch.example_heater_heatkeepingstatus</code></td>
+</tr>
+<tr>
+<td>加热模式</td>
+<td><code>select.example_heater_heatingmode</code></td>
+</tr>
+<tr>
+<td>功率设定</td>
+<td><code>select.example_heater_power</code></td>
+</tr>
+<tr>
+<td>当前水温</td>
+<td><code>sensor.example_heater_currenttemperature</code></td>
+</tr>
+<tr>
+<td>目标温度</td>
+<td><code>sensor.example_heater_targettemperature</code></td>
+</tr>
+</tbody>
+</table>
+<p>只需替换实体 ID，不要把账号、密码或令牌写进示例文件。</p>
+<h3>第 2 步：核对档位选项</h3>
+<p>查看原生功率实体的 <code>options</code>。示例使用以下三个选项字符串：</p>
+<pre><code class="language-text">800W(低)
+1200W(中)
+2000W(高)
+</code></pre>
+<p>它们是集成返回的名称，<strong>不代表本项目对实际功率的认定</strong>。面板只显示低、中、高档。</p>
+<p>如果你的选项不同，请同步修改模板中的状态映射、可选值判断和动作映射。加热模式的名称如果不是“增容”，也需要调整相应的状态判断和控制动作。</p>
+<h3>第 3 步：添加配置文件</h3>
+<p>将仓库中的 <code>packages/haier_heater.yaml</code> 复制到 Home Assistant 配置目录的同名位置。</p>
+<p>然后，把下面的设置合并到已有的 <code>homeassistant:</code> 块中。保留这个块内的其他设置。</p>
+<pre><code class="language-yaml">homeassistant:
+  packages: !include_dir_named packages
+</code></pre>
+<blockquote>
+<p><strong>重要事项：</strong> <code>packages:</code> 必须位于 <code>homeassistant:</code> 下。不要把它放到配置顶层，也不要创建第二个 <code>homeassistant:</code> 块。已经启用 packages 时，无需重复添加。</p>
+</blockquote>
+<h3>第 4 步：检查并加载</h3>
+<ol>
+<li>使用 Home Assistant 的配置检查，确认没有错误。</li>
+<li>如果首次启用 packages，重启 Home Assistant。已经启用时，可使用“模板实体重新加载”。</li>
+<li>在“开发者工具”&gt;“状态”中，确认出现以下两个新实体。</li>
+</ol>
+<pre><code class="language-text">switch.haier_heater_boost
+select.haier_heater_speed
+</code></pre>
+<p>如果同名 ID 已被占用，系统可能在名称后追加数字。请以实际生成的实体 ID 为准，并修改面板中的引用。</p>
+<h2 id="dashboard">添加面板</h2>
+<p>你可以把热水器模块加入现有总览，也可以创建独立的热水器仪表盘。两种方式选用一种即可。</p>
+<h3>加入现有总览</h3>
+<p>打开 <code>dashboards/heater.yaml</code>，只复制 <code>views[0].sections[0].cards</code> 中的卡片内容，加入现有 Sections 视图的一列中。</p>
+<p>保留现有总览的其他模块，不需要替换整个仪表盘。检查新增磁贴是否引用了你实际使用的实体 ID。</p>
+<h3>使用独立仪表盘</h3>
+<p>把 <code>dashboards/heater.yaml</code> 复制到 Home Assistant 配置目录的同名位置。</p>
+<p>在已有的 <code>lovelace.dashboards</code> 设置中合并以下条目。保留其他仪表盘，不要用这个示例覆盖整个设置。</p>
+<pre><code class="language-yaml">lovelace:
+  dashboards:
+    dashboard-heater:
+      mode: yaml
+      title: 热水器
+      icon: mdi:water-boiler
+      show_in_sidebar: true
+      filename: dashboards/heater.yaml
+</code></pre>
+<p>新注册仪表盘后，重启 Home Assistant。如果页面仍显示旧内容，再刷新页面。</p>
+<h2 id="modes">切换模式</h2>
+<p>三个控件共同管理互斥模式。它们不是三项可以同时开启的独立功能。</p>
+<figure><svg xmlns="http://www.w3.org/2000/svg" width="900" height="630" viewBox="0 0 900 630" role="img" aria-labelledby="modes-title modes-desc">
+<title id="modes-title">温水、增容与普通加热如何切换</title>
+<desc id="modes-desc">开启增容可从智能温水进入速热增容，关闭增容会返回智能温水。在任一模式选择低、中、高档即可进入普通加热。普通加热时也可以通过开关进入温水或增容。</desc>
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto-start-reverse"><path d="M1 1 8 5 1 9" fill="none" stroke="#6e6e73" stroke-width="1.5"/></marker></defs>
+<rect width="900" height="630" rx="20" fill="#f5f5f7"/>
+<g font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif">
+<text x="36" y="45" font-size="17" fill="#6e6e73">模式切换 · 每次只使用一种模式</text>
+<g fill="#fff" stroke="#d2d2d7"><rect x="65" y="112" width="280" height="124" rx="14"/><rect x="555" y="112" width="280" height="124" rx="14"/><rect x="245" y="414" width="410" height="124" rx="14"/></g>
+<g text-anchor="middle"><g fill="#1d1d1f" font-size="25" font-weight="600"><text x="205" y="161">智能温水</text><text x="695" y="161">速热增容</text><text x="450" y="462">普通加热</text></g><g fill="#6e6e73" font-size="17"><text x="205" y="196">中温保温开启</text><text x="695" y="196">加热模式为“增容”</text><text x="450" y="499">低档 / 中档 / 高档</text></g></g>
+<g fill="none" stroke="#6e6e73" stroke-width="2" marker-end="url(#arrow)"><path d="M358 145H542"/><path d="M542 207H358"/><path d="M205 248V312Q205 335 229 335H395Q418 335 418 360V400"/><path d="M695 248V312Q695 335 671 335H505Q482 335 482 360V400"/></g>
+<g fill="#0066cc" text-anchor="middle" font-size="17"><text x="450" y="129">打开增容</text><text x="450" y="234">关闭增容</text></g>
+<rect x="319" y="314" width="262" height="42" rx="8" fill="#f5f5f7"/><text x="450" y="341" text-anchor="middle" font-size="18" fill="#1d1d1f">选择任一加热档位</text>
+<text x="450" y="583" text-anchor="middle" font-size="16" fill="#6e6e73">普通加热时，也可打开温水或增容开关来切换模式。</text>
+</g></svg>
+<figcaption>图 2　模式切换示意。选择任一档位会进入普通加热；关闭增容会回到智能温水。</figcaption></figure>
+
+<table>
+<thead>
+<tr>
+<th>想执行的操作</th>
+<th>面板中的做法</th>
+<th>设备应回报的结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>使用日常保温</td>
+<td>打开智能温水</td>
+<td>中温保温开启</td>
+</tr>
+<tr>
+<td>使用速热增容</td>
+<td>打开速热增容</td>
+<td>加热模式为“增容”</td>
+</tr>
+<tr>
+<td>结束速热增容</td>
+<td>关闭速热增容</td>
+<td>回到智能温水</td>
+</tr>
+<tr>
+<td>选择普通加热档位</td>
+<td>在变速选择中选低、中或高档</td>
+<td>回报对应档位，退出其他模式</td>
+</tr>
+</tbody>
+</table>
+<p>进入增容或普通加热时，设备可能同时更改目标温度。请以设备和海尔智家 App 的实际回报为准。</p>
+<h3>为什么档位有时不是低、中或高？</h3>
+<p>温水或增容模式下，原生功率值可能为空。这是当前模式没有启用普通加热档位，不一定是设备离线。</p>
+<p>本项目会显示当前模式，不会把空值强行填成高档。设备真正失联时，控件仍会显示不可用。</p>
+<h2 id="check">检查是否正常</h2>
+<p>打开 Home Assistant 的实时状态页面，逐项检查以下操作：</p>
+<ol>
+<li>开启、关闭智能温水，确认设备回报发生变化。</li>
+<li>开启速热增容，确认加热模式变为“增容”。</li>
+<li>关闭速热增容，确认返回智能温水。</li>
+<li>分别选择低、中、高档，确认设备回报对应档位。</li>
+<li>测试结束后，恢复原来使用的模式或档位。</li>
+</ol>
+<p>仅看到首页能打开、实体出现在注册表，或历史恢复文件中有旧状态，都不能证明控件正常。应确认实时状态变化来自设备回报。</p>
+<h3>控件显示不可用</h3>
+<p>先检查热水器总开关及中温保温等原生实体是否在线，再检查面板是否引用了正确的实体 ID。如果看到“集成不再提供此实体”，应检查模板是否已加载，以及是否引用了旧的重复实体。</p>
+<h3>档位名称不一致</h3>
+<p>重新检查原生功率实体的 <code>options</code>，同步更新模板中的三处映射。不要根据示例名称推断自己设备的实际瓦数。</p>
+<h3>配置检查报错</h3>
+<p>确认 <code>packages:</code> 的缩进和位置正确，没有重复的顶层 <code>homeassistant:</code> 块。新模板应通过配置检查后再加载，无需手工修改 <code>.storage</code>。</p>
+<h2 id="about">版本与隐私</h2>
+<p>本手册版本为 <strong>v1.1.0</strong>。本次更新调整说明书的字体层级、段落格式、导航和图示，不改变热水器控制逻辑。</p>
+<p>现场实现已通过真实设备回报验证；仓库 YAML 是相同行为的可复用版本，另做了目标版本配置规则校验和离线测试。它不等同于所有型号都已完成安装验证。</p>
+<p>发布内容使用占位实体，图示全部为合成演示。仓库不包含真实账号、令牌、家庭地址、设备唯一标识或原始家庭截图。</p>
+<p>本项目采用 MIT 许可，与海尔、Home Assistant 或 Apple 官方均无隶属关系。版式借鉴清晰的用户手册阅读原则，不使用 Apple 标志、专有字体文件或官方手册正文。</p><a class="back-top" href="#top">返回顶部 ↑</a></article></main></div>
+<footer><div class="footer-inner"><p>海尔热水器控制面板 · v1.1.0 · MIT 许可</p><p>独立开源项目，与海尔、Home Assistant 及 Apple 官方无隶属关系。图示为合成演示，不包含家庭真实数据。</p></div></footer>
+<script>
+if ('IntersectionObserver' in window) {
+ const observer=new IntersectionObserver(entries=>{for(const entry of entries){if(entry.isIntersecting){document.querySelectorAll('.toc a').forEach(a=>a.setAttribute('aria-current',String(a.hash==='#'+entry.target.id)))}}},{rootMargin:'-12% 0px -65% 0px'});
+ document.querySelectorAll('h2[id]').forEach(h=>observer.observe(h));
+}
+document.querySelectorAll('.mobile-contents a').forEach(a=>a.addEventListener('click',()=>{document.querySelector('.mobile-contents').open=false}));
+</script></body></html>

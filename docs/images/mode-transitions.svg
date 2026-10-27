@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="630" viewBox="0 0 900 630" role="img" aria-labelledby="modes-title modes-desc">
+<title id="modes-title">温水、增容与普通加热如何切换</title>
+<desc id="modes-desc">开启增容可从智能温水进入速热增容，关闭增容会返回智能温水。在任一模式选择低、中、高档即可进入普通加热。普通加热时也可以通过开关进入温水或增容。</desc>
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto-start-reverse"><path d="M1 1 8 5 1 9" fill="none" stroke="#6e6e73" stroke-width="1.5"/></marker></defs>
+<rect width="900" height="630" rx="20" fill="#f5f5f7"/>
+<g font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif">
+<text x="36" y="45" font-size="17" fill="#6e6e73">模式切换 · 每次只使用一种模式</text>
+<g fill="#fff" stroke="#d2d2d7"><rect x="65" y="112" width="280" height="124" rx="14"/><rect x="555" y="112" width="280" height="124" rx="14"/><rect x="245" y="414" width="410" height="124" rx="14"/></g>
+<g text-anchor="middle"><g fill="#1d1d1f" font-size="25" font-weight="600"><text x="205" y="161">智能温水</text><text x="695" y="161">速热增容</text><text x="450" y="462">普通加热</text></g><g fill="#6e6e73" font-size="17"><text x="205" y="196">中温保温开启</text><text x="695" y="196">加热模式为“增容”</text><text x="450" y="499">低档 / 中档 / 高档</text></g></g>
+<g fill="none" stroke="#6e6e73" stroke-width="2" marker-end="url(#arrow)"><path d="M358 145H542"/><path d="M542 207H358"/><path d="M205 248V312Q205 335 229 335H395Q418 335 418 360V400"/><path d="M695 248V312Q695 335 671 335H505Q482 335 482 360V400"/></g>
+<g fill="#0066cc" text-anchor="middle" font-size="17"><text x="450" y="129">打开增容</text><text x="450" y="234">关闭增容</text></g>
+<rect x="319" y="314" width="262" height="42" rx="8" fill="#f5f5f7"/><text x="450" y="341" text-anchor="middle" font-size="18" fill="#1d1d1f">选择任一加热档位</text>
+<text x="450" y="583" text-anchor="middle" font-size="16" fill="#6e6e73">普通加热时，也可打开温水或增容开关来切换模式。</text>
+</g></svg>
