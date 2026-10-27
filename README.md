@@ -1,60 +1,197 @@
-# 海尔热水器控制面板
+# 热水器控制面板使用手册
 
-在 Home Assistant 中使用智能温水、速热增容和低、中、高档选择。原生磁贴，真实状态反馈，无需额外安装前端卡片。
+> **阅读方式：** 当前页面是完整版说明书。也可打开 [排版版在线手册](https://svenrogue.github.io/haier-water-heater-dashboard/) 或下载 [PDF 说明书](docs/haier-heater-guide-v1.1.0.pdf)。
 
-**[阅读图文使用手册](https://SvenRogue.github.io/haier-water-heater-dashboard/)** · [下载 PDF 说明书](docs/haier-heater-guide-v1.1.0.pdf) · [纯文本手册](docs/guide.md)
+通过 Home Assistant 管理智能温水、速热增容和加热档位。
 
-![控制面板示意：所有数据均为虚构演示](docs/images/controls.svg)
+本手册适用于本项目的脱敏配置范例。已观察的设备型号为 EC6002-MG(U1)，配置语法按 Home Assistant Core 2026.6.3 校验。不同型号应先核对原生实体和模式行为。
 
-## 开始使用
+## 认识控制面板
 
-先阅读[使用前准备](docs/guide.md#prepare)，核对设备实体和模式行为，再按[安装步骤](docs/guide.md#install)配置。
+面板保留日常需要的信息：电源、水温、两种模式开关、档位选择和设定温度。智能温水与速热增容并排显示，档位选择单独占一行。
 
-| 文件 | 用途 |
+![图 1　控制面板示意。所有状态和温度均为演示数据，不是实时设备画面。](docs/images/controls.svg)
+
+### 智能温水
+
+使用设备提供的中温保温功能。开启后，档位选择会显示“智能温水中”。
+
+### 速热增容
+
+开启后进入设备的增容模式。**关闭速热增容会回到智能温水**，不会关闭热水器，也不会恢复此前的普通加热档位。
+
+### 变速选择
+
+选择低档、中档或高档即可进入普通加热。处于其他模式时，此处会显示“智能温水中”或“速热增容中”；仍然可以选择档位来切换模式。
+
+> **使用提示：** 本示例不会自动打开热水器总电源。请先开启总开关，再使用模式控制。
+
+## 使用前准备
+
+开始安装前，请确认以下条件：
+
+- 已在 Home Assistant 中安装并配置海尔集成，原生设备实体能正常更新。
+- 原生加热模式包含精确的“增容”选项。
+- 在海尔智家 App 中切换模式时，设备会自动退出其他模式。
+- 已备份现有配置，准备把示例合并到当前设置中。
+
+本项目使用原生 Sections、Tile、Toggle 和 Select options 卡片，不需要额外安装前端卡片。
+
+集成项目：[banto6/haier](https://github.com/banto6/haier)。本示例依赖设备自身的模式互斥行为，不能保证所有型号都使用相同选项或切换方式。
+
+## 安装控制配置
+
+### 第 1 步：确认原生实体
+
+在 Home Assistant 中打开“开发者工具”>“状态”，找到以下六类实体。用你自己的实体 ID 替换两个配置文件中的占位 ID。
+
+| 原生功能 | 示例中的占位 ID |
 | --- | --- |
-| [热水器配置](packages/haier_heater.yaml) | 速热增容与档位选择模板 |
-| [面板配置](dashboards/heater.yaml) | 独立仪表盘或现有总览中的热水器模块 |
-| [图文手册](https://SvenRogue.github.io/haier-water-heater-dashboard/) | 安装、操作、图示和故障排查 |
+| 热水器总开关 | `switch.example_heater_onoffstatus` |
+| 中温保温开关 | `switch.example_heater_heatkeepingstatus` |
+| 加热模式 | `select.example_heater_heatingmode` |
+| 功率设定 | `select.example_heater_power` |
+| 当前水温 | `sensor.example_heater_currenttemperature` |
+| 目标温度 | `sensor.example_heater_targettemperature` |
 
-配置中的 `example_heater` 是占位符，使用前需要替换。请先开启热水器总开关，再使用模式控制。
+只需替换实体 ID，不要把账号、密码或令牌写进示例文件。
 
-## 三种模式如何工作
+### 第 2 步：核对档位选项
 
-- **智能温水：**直接使用设备的中温保温开关。
-- **速热增容：**开启增容模式；关闭后回到智能温水。
-- **变速选择：**选择低、中或高档，进入普通加热。
+查看原生功率实体的 `options`。示例使用以下三个选项字符串：
 
-![模式切换示意：关闭增容回到温水，选择档位进入普通加热](docs/images/mode-transitions.svg)
+```text
+800W(低)
+1200W(中)
+2000W(高)
+```
 
-这些模式互斥。温水或增容模式下，原生功率值可能为空；面板会显示当前模式，不会将空值强行填成高档。设备真正离线时仍显示不可用。
+它们是集成返回的名称，**不代表本项目对实际功率的认定**。面板只显示低、中、高档。
 
-## 兼容范围
+如果你的选项不同，请同步修改模板中的状态映射、可选值判断和动作映射。加热模式的名称如果不是“增容”，也需要调整相应的状态判断和控制动作。
 
-现场观察的型号为 EC6002-MG(U1)，集成为 [banto6/haier](https://github.com/banto6/haier)，配置语法按 Home Assistant Core 2026.6.3 校验。
+### 第 3 步：添加配置文件
 
-示例依赖原生“增容”选项及设备自动退出其他模式的行为。不同型号需先与海尔智家 App 对照验证，不能直接假定映射相同。原生功率选项名称也不等于已验证的实际瓦数。
+将仓库中的 `packages/haier_heater.yaml` 复制到 Home Assistant 配置目录的同名位置。
 
-现场实现已用真实设备回报验证；仓库中的通用 YAML 另做了目标版本校验和离线测试。参见[验证记录](docs/VERIFICATION.md)。
+然后，把下面的设置合并到已有的 `homeassistant:` 块中。保留这个块内的其他设置。
 
-## 离线验证
+```yaml
+homeassistant:
+  packages: !include_dir_named packages
+```
+
+> **重要事项：** `packages:` 必须位于 `homeassistant:` 下。不要把它放到配置顶层，也不要创建第二个 `homeassistant:` 块。已经启用 packages 时，无需重复添加。
+
+### 第 4 步：检查并加载
+
+1. 使用 Home Assistant 的配置检查，确认没有错误。
+2. 如果首次启用 packages，重启 Home Assistant。已经启用时，可使用“模板实体重新加载”。
+3. 在“开发者工具”>“状态”中，确认出现以下两个新实体。
+
+```text
+switch.haier_heater_boost
+select.haier_heater_speed
+```
+
+如果同名 ID 已被占用，系统可能在名称后追加数字。请以实际生成的实体 ID 为准，并修改面板中的引用。
+
+## 添加面板
+
+你可以把热水器模块加入现有总览，也可以创建独立的热水器仪表盘。两种方式选用一种即可。
+
+### 加入现有总览
+
+打开 `dashboards/heater.yaml`，只复制 `views[0].sections[0].cards` 中的卡片内容，加入现有 Sections 视图的一列中。
+
+保留现有总览的其他模块，不需要替换整个仪表盘。检查新增磁贴是否引用了你实际使用的实体 ID。
+
+### 使用独立仪表盘
+
+把 `dashboards/heater.yaml` 复制到 Home Assistant 配置目录的同名位置。
+
+在已有的 `lovelace.dashboards` 设置中合并以下条目。保留其他仪表盘，不要用这个示例覆盖整个设置。
+
+```yaml
+lovelace:
+  dashboards:
+    dashboard-heater:
+      mode: yaml
+      title: 热水器
+      icon: mdi:water-boiler
+      show_in_sidebar: true
+      filename: dashboards/heater.yaml
+```
+
+新注册仪表盘后，重启 Home Assistant。如果页面仍显示旧内容，再刷新页面。
+
+## 切换模式
+
+三个控件共同管理互斥模式。它们不是三项可以同时开启的独立功能。
+
+![图 2　模式切换示意。选择任一档位会进入普通加热；关闭增容会回到智能温水。](docs/images/mode-transitions.svg)
+
+| 想执行的操作 | 面板中的做法 | 设备应回报的结果 |
+| --- | --- | --- |
+| 使用日常保温 | 打开智能温水 | 中温保温开启 |
+| 使用速热增容 | 打开速热增容 | 加热模式为“增容” |
+| 结束速热增容 | 关闭速热增容 | 回到智能温水 |
+| 选择普通加热档位 | 在变速选择中选低、中或高档 | 回报对应档位，退出其他模式 |
+
+进入增容或普通加热时，设备可能同时更改目标温度。请以设备和海尔智家 App 的实际回报为准。
+
+### 为什么档位有时不是低、中或高？
+
+温水或增容模式下，原生功率值可能为空。这是当前模式没有启用普通加热档位，不一定是设备离线。
+
+本项目会显示当前模式，不会把空值强行填成高档。设备真正失联时，控件仍会显示不可用。
+
+## 检查是否正常
+
+打开 Home Assistant 的实时状态页面，逐项检查以下操作：
+
+1. 开启、关闭智能温水，确认设备回报发生变化。
+2. 开启速热增容，确认加热模式变为“增容”。
+3. 关闭速热增容，确认返回智能温水。
+4. 分别选择低、中、高档，确认设备回报对应档位。
+5. 测试结束后，恢复原来使用的模式或档位。
+
+仅看到首页能打开、实体出现在注册表，或历史恢复文件中有旧状态，都不能证明控件正常。应确认实时状态变化来自设备回报。
+
+### 控件显示不可用
+
+先检查热水器总开关及中温保温等原生实体是否在线，再检查面板是否引用了正确的实体 ID。如果看到“集成不再提供此实体”，应检查模板是否已加载，以及是否引用了旧的重复实体。
+
+### 档位名称不一致
+
+重新检查原生功率实体的 `options`，同步更新模板中的三处映射。不要根据示例名称推断自己设备的实际瓦数。
+
+### 配置检查报错
+
+确认 `packages:` 的缩进和位置正确，没有重复的顶层 `homeassistant:` 块。新模板应通过配置检查后再加载，无需手工修改 `.storage`。
+
+## 版本与隐私
+
+本手册版本为 **v1.1.0**。本次更新调整说明书的字体层级、段落格式、导航和图示，不改变热水器控制逻辑。
+
+现场实现已通过真实设备回报验证；仓库 YAML 是相同行为的可复用版本，另做了目标版本配置规则校验和离线测试。它不等同于所有型号都已完成安装验证。
+
+发布内容使用占位实体，图示全部为合成演示。仓库不包含真实账号、令牌、家庭地址、设备唯一标识或原始家庭截图。
+
+本项目采用 MIT 许可，与海尔、Home Assistant 或 Apple 官方均无隶属关系。版式借鉴清晰的用户手册阅读原则，不使用 Apple 标志、专有字体文件或官方手册正文。
+
+## 项目文件
+
+- [热水器控制配置](packages/haier_heater.yaml)
+- [面板配置](dashboards/heater.yaml)
+- [脱敏说明](docs/PRIVACY.md) · [验证记录](docs/VERIFICATION.md)
+- [MIT 许可](LICENSE)
+
+离线检查：
 
 ```sh
 python -m pip install -r requirements-dev.txt
 python tools/validate.py
 ```
 
-验证覆盖模式、档位映射、离线处理、布局及明显的敏感信息格式，不连接家庭设备。
-
-如需修改说明书，编辑 [手册正文](docs/guide.md)，再运行：
-
-```sh
-python tools/build_manual.py
-```
-
-生成的 [独立 HTML 手册](docs/index.html) 内嵌全部图示，可下载后离线阅读，也可在浏览器中打印。
-
-## 隐私与许可
-
-本项目只发布脱敏范例。未包含真实账号、令牌、地址、设备唯一标识、完整家庭总览或原始截图；图示均为合成演示。详见[脱敏说明](docs/PRIVACY.md)。
-
-采用 [MIT 许可](LICENSE)。与海尔、Home Assistant 及 Apple 官方均无隶属关系。
+验证脚本不会连接 Home Assistant 或控制设备。修改手册正文后，运行 `python tools/build_manual.py` 重新生成 HTML。
